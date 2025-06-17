@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>WebSocket 모니터링</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 2em;
+            }
+            #log {
+                border: 1px solid #ccc;
+                padding: 1em;
+                height: 300px;
+                overflow-y: auto;
+                background: #f9f9f9;
+            }
+            #inputArea {
+                margin-top: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>WebSocket 서버 모니터링</h2>
+        <div>
+            <label>서버 주소: </label>
+            <input type="text" id="wsUrl" value="ws://localhost:8080" />
+            <button onclick="connectWS()">접속</button>
+            <button onclick="disconnectWS()">연결 종료</button>
+        </div>
+        <div id="log"></div>
+        <div id="inputArea" style="display: none">
+            <input type="text" id="msgInput" placeholder="메시지 입력" />
+            <button onclick="sendMsg()">전송</button>
+        </div>
+        <script>
+            let ws;
+            const logDiv = document.getElementById('log');
+            const inputArea = document.getElementById('inputArea');
+            function log(msg) {
+                logDiv.innerHTML += msg + '<br>';
+                logDiv.scrollTop = logDiv.scrollHeight;
+            }
+            function connectWS() {
+                const url = document.getElementById('wsUrl').value;
+                ws = new WebSocket(url);
+                ws.onopen = () => {
+                    log('<b>서버에 연결됨</b>');
+                    inputArea.style.display = '';
+                };
+                ws.onmessage = (e) => {
+                    log('<span style="color:green;">서버 → 클라이언트:</span> ' + e.data);
+                };
+                ws.onclose = () => {
+                    log('<b>연결 종료</b>');
+                    inputArea.style.display = 'none';
+                };
+                ws.onerror = (e) => {
+                    log('<span style="color:red;">에러 발생</span>');
+                };
+            }
+            function disconnectWS() {
+                if (ws) ws.close();
+            }
+            function sendMsg() {
+                const msg = document.getElementById('msgInput').value;
+                if (ws && ws.readyState === 1) {
+                    ws.send(msg);
+                    log('<span style="color:blue;">클라이언트 → 서버:</span> ' + msg);
+                    document.getElementById('msgInput').value = '';
+                }
+            }
+        </script>
+    </body>
+</html>
