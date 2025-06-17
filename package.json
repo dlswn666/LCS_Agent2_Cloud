@@ -1,15 +1,26 @@
 {
-  "name": "lcs_agent2_cloud",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "ws": "^8.18.2"
-  }
+    "name": "lcs_agent2_cloud",
+    "version": "1.0.0",
+    "description": "Node.js 기반 확장형 웹소켓 서버",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "websocket",
+        "nodejs",
+        "server",
+        "socket",
+        "ws"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "ws": "^8.18.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.0"
+    }
 }
